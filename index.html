@@ -48,7 +48,6 @@
             }
         }
 
-        /* Стили для карточек с изображением слева */
         .car-card {
             overflow: hidden;
             margin-bottom: 2rem;
@@ -61,18 +60,11 @@
         .car-card .car-image-wrapper {
             height: 100%;
             min-height: 300px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #adb5bd;
-            font-size: 1.2rem;
-            font-weight: 500;
             position: relative;
             overflow: hidden;
+            background: #f8f9fa;
         }
 
-        /* Место для будущих изображений */
         .car-card .car-image-wrapper img {
             width: 100%;
             height: 100%;
@@ -80,16 +72,6 @@
             position: absolute;
             top: 0;
             left: 0;
-            display: none; /* Скрыты по умолчанию, пока нет картинок */
-        }
-
-        /* Когда появится изображение, показываем его и скрываем текст-заглушку */
-        .car-card .car-image-wrapper.has-image .placeholder-text {
-            display: none;
-        }
-
-        .car-card .car-image-wrapper.has-image img {
-            display: block;
         }
 
         .car-card .car-title {
@@ -193,6 +175,7 @@
                     <li class="nav-item"><a class="nav-link" href="#cars">Автомобили</a></li>
                 </ul>
                 <ul class="navbar-nav">
+                    <li class="nav-item"><span class="nav-link text-white-50">Гость</span></li>
                 </ul>
             </div>
         </div>
@@ -206,12 +189,12 @@
                     <div class="col-lg-8 mx-auto text-center">
                         <h1 class="display-4 fw-bold text-primary">Прокат автомобилей</h1>
                         <p class="lead">Выберите идеальный автомобиль для вашей поездки</p>
-                        <!-- <a href="#cars" class="btn btn-primary btn-lg mt-3">Посмотреть авто</a> -->
+                        <a href="#cars" class="btn btn-primary btn-lg mt-3">Посмотреть авто</a>
                     </div>
                 </div>
             </section>
 
-            <!-- Секция с тремя карточками (изображение слева, текст справа) -->
+            <!-- Секция с тремя карточками -->
             <section id="cars">
                 <div class="row mb-4">
                     <div class="col-12">
@@ -224,10 +207,8 @@
                 <div class="card shadow-sm hover-card car-card fade-in">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <div class="car-image-wrapper" id="image-bmw">
-                                <!-- ЗДЕСЬ ВЫ СМОЖЕТЕ ВСТАВИТЬ КАРТИНКУ -->
-                                <!-- <img src="путь_к_вашей_картинке/bmw-x5.jpg" alt="BMW X5"> -->
-                                <span class="placeholder-text">BMW X5</span>
+                            <div class="car-image-wrapper">
+                                <img src="images/car1.jpg" alt="BMW X5">
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -264,10 +245,8 @@
                 <div class="card shadow-sm hover-card car-card fade-in">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <div class="car-image-wrapper" id="image-mercedes">
-                                <!-- ЗДЕСЬ ВЫ СМОЖЕТЕ ВСТАВИТЬ КАРТИНКУ -->
-                                <!-- <img src="путь_к_вашей_картинке/mercedes-s-class.jpg" alt="Mercedes S-Class"> -->
-                                <span class="placeholder-text">Mercedes S-Class</span>
+                            <div class="car-image-wrapper">
+                                <img src="images/car2.jpg" alt="Mercedes S-Class">
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -304,10 +283,8 @@
                 <div class="card shadow-sm hover-card car-card fade-in">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <div class="car-image-wrapper" id="image-toyota">
-                                <!-- ЗДЕСЬ ВЫ СМОЖЕТЕ ВСТАВИТЬ КАРТИНКУ -->
-                                <!-- <img src="путь_к_вашей_картинке/toyota-camry.jpg" alt="Toyota Camry"> -->
-                                <span class="placeholder-text">Toyota Camry</span>
+                            <div class="car-image-wrapper">
+                                <img src="images/car3.jpg" alt="Toyota Camry">
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -367,7 +344,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Анимация появления карточек
             document.querySelectorAll('.car-card').forEach(card => {
                 const observer = new IntersectionObserver(entries => {
                     entries.forEach(entry => {
