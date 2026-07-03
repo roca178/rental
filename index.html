@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прокат автомобилей</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Стили для карточек с изображением слева */
+        .car-card {
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .car-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .car-card .car-image-wrapper {
+            height: 100%;
+            min-height: 300px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 1.2rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Место для будущих изображений */
+        .car-card .car-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none; /* Скрыты по умолчанию, пока нет картинок */
+        }
+
+        /* Когда появится изображение, показываем его и скрываем текст-заглушку */
+        .car-card .car-image-wrapper.has-image .placeholder-text {
+            display: none;
+        }
+
+        .car-card .car-image-wrapper.has-image img {
+            display: block;
+        }
+
+        .car-card .car-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .car-card .car-subtitle {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-card .car-price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0d6efd;
+            margin-bottom: 1rem;
+        }
+
+        .car-card .car-price small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #6c757d;
+        }
+
+        .car-card .car-description {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: #212529;
+        }
+
+        .car-card .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 2rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .car-card .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .car-card .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .car-card .spec-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .car-card .spec-value {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .car-card .btn-disabled {
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+            color: #6c757d;
+            cursor: not-allowed;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            font-weight: 600;
+            transition: none;
+        }
+
+        .car-card .btn-disabled:hover {
+            background-color: #e9ecef;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .car-card .car-image-wrapper {
+                min-height: 200px;
+            }
+            .car-card .spec-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Прокат авто</a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Главная</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cars">Автомобили</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container mt-4">
+            <!-- Секция Главная -->
+            <section id="home">
+                <div class="row mb-5">
+                    <div class="col-lg-8 mx-auto text-center">
+                        <h1 class="display-4 fw-bold text-primary">Прокат автомобилей</h1>
+                        <p class="lead">Выберите идеальный автомобиль для вашей поездки</p>
+                        <!-- <a href="#cars" class="btn btn-primary btn-lg mt-3">Посмотреть авто</a> -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Секция с тремя карточками (изображение слева, текст справа) -->
+            <section id="cars">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="display-6">Наши автомобили</h1>
+                        <p class="text-muted">Выберите автомобиль для аренды</p>
+                    </div>
+                </div>
+
+                <!-- BMW X5 -->
+                <div class="card shadow-sm hover-card car-card fade-in">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="car-image-wrapper" id="image-bmw">
+                                <!-- ЗДЕСЬ ВЫ СМОЖЕТЕ ВСТАВИТЬ КАРТИНКУ -->
+                                <!-- <img src="путь_к_вашей_картинке/bmw-x5.jpg" alt="BMW X5"> -->
+                                <span class="placeholder-text">BMW X5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div class="car-title">BMW X5</div>
+                                <div class="car-subtitle">BMW • 2023 год</div>
+                                <div class="car-price">15 000 ₽ <small>/ день</small></div>
+                                <p class="car-description">Премиальный внедорожник с полным приводом</p>
+                                <div class="spec-grid">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Тип</span>
+                                        <span class="spec-value">Внедорожник</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Коробка</span>
+                                        <span class="spec-value">Автомат</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Двигатель</span>
+                                        <span class="spec-value">3.0 л, 249 л.с.</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Цвет</span>
+                                        <span class="spec-value">Черный</span>
+                                    </div>
+                                </div>
+                                <button class="btn-disabled" disabled>Бронирование временно недоступно</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mercedes S-Class -->
+                <div class="card shadow-sm hover-card car-card fade-in">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="car-image-wrapper" id="image-mercedes">
+                                <!-- ЗДЕСЬ ВЫ СМОЖЕТЕ ВСТАВИТЬ КАРТИНКУ -->
+                                <!-- <img src="путь_к_вашей_картинке/mercedes-s-class.jpg" alt="Mercedes S-Class"> -->
+                                <span class="placeholder-text">Mercedes S-Class</span>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div class="car-title">Mercedes S-Class</div>
+                                <div class="car-subtitle">Mercedes • 2024 год</div>
+                                <div class="car-price">20 000 ₽ <small>/ день</small></div>
+                                <p class="car-description">Бизнес-класс с максимальным комфортом</p>
+                                <div class="spec-grid">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Тип</span>
+                                        <span class="spec-value">Седан</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Коробка</span>
+                                        <span class="spec-value">Автомат</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Двигатель</span>
+                                        <span class="spec-value">3.0 л, 367 л.с.</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Цвет</span>
+                                        <span class="spec-value">Белый</span>
+                                    </div>
+                                </div>
+                                <button class="btn-disabled" disabled>Бронирование временно недоступно</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toyota Camry -->
+                <div class="card shadow-sm hover-card car-card fade-in">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="car-image-wrapper" id="image-toyota">
+                                <!-- ЗДЕСЬ ВЫ СМОЖЕТЕ ВСТАВИТЬ КАРТИНКУ -->
+                                <!-- <img src="путь_к_вашей_картинке/toyota-camry.jpg" alt="Toyota Camry"> -->
+                                <span class="placeholder-text">Toyota Camry</span>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div class="car-title">Toyota Camry</div>
+                                <div class="car-subtitle">Toyota • 2022 год</div>
+                                <div class="car-price">7 000 ₽ <small>/ день</small></div>
+                                <p class="car-description">Надежный седан для города и трассы</p>
+                                <div class="spec-grid">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Тип</span>
+                                        <span class="spec-value">Седан</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Коробка</span>
+                                        <span class="spec-value">Автомат</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Двигатель</span>
+                                        <span class="spec-value">2.5 л, 200 л.с.</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Цвет</span>
+                                        <span class="spec-value">Серебристый</span>
+                                    </div>
+                                </div>
+                                <button class="btn-disabled" disabled>Бронирование временно недоступно</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Контакты</h5>
+                    <p class="mb-1">+7(989) 082-10-40 - г.Сочи | Адлер</p>
+                    <p class="mb-0">bravocar@mail.ru</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">График работы</h5>
+                    <p class="mb-1">круглосуточно</p>
+                    <p class="mb-0">без обеда и выходных</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Адрес</h5>
+                    <p class="mb-0">Краснодарский край, г.Сочи | Адлер</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Анимация появления карточек
+            document.querySelectorAll('.car-card').forEach(card => {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('fade-in');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
